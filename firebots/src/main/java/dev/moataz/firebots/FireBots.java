@@ -107,27 +107,10 @@ public class FireBots {
         FireBots.this.fireBotsMessagingInterface = fireBotsMessagingInterface;
     }
 
-    public void setNotificationClickListener(Activity activity) {
-        FireBots.this.fireBotsNotificationListener = (FireBotsNotificationClickListenerInterface) activity;
+    public void setNotificationClickListener(FireBotsNotificationClickListenerInterface fireBotsNotificationListener) {
+        FireBots.this.fireBotsNotificationListener = (FireBotsNotificationClickListenerInterface) fireBotsNotificationListener;
 
     }
-
-
-
-
-    public static void testRest() {
-        //Simple POST
-
-        try {
-
-
-
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
 }
