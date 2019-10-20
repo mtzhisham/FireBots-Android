@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="dev.moataz.firebots" >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- usesCleartextTraffic is a fix for  -->
+    <application
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <service
+            android:name=".messaging.FireBotsFirebaseMessagingService"
+            android:exported="false"
+            >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".notification.FireBotsNotificationClickListenerService"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".notification.FireBotsNotificationClickReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.moataz.dev.firepush.action.CLICK" />
+            </intent-filter>
+
+        </receiver>
+
+    </application>
+
+</manifest>
