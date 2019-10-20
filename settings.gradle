@@ -1,0 +1,2 @@
+include ':sample-app', ':firebots'
+rootProject.name='FireBots'
