@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
 
         FireBots.getInstance().setMessagingInterface(this);
         FireBots.getInstance().setNotificationClickListener(this);
-        FireBots.testRest();
     }
 
     @Override
