@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -23,8 +24,8 @@ import static dev.moataz.firebots.FireBots.TAG;
 
 public class RestTask extends AsyncTask<String, Void, Boolean> {
 
-    Context context;
-    public static void runTask(Context context, String url, String pushBotsAppID, String fireBaseToken, String platform) {
+    private WeakReference<Context> contextWeakReference;
+    static void runTask(Context context, String url, String pushBotsAppID, String fireBaseToken, String platform) {
         if (!TextUtils.isEmpty(url)&&!TextUtils.isEmpty(pushBotsAppID)&&!TextUtils.isEmpty(fireBaseToken)&&!TextUtils.isEmpty(platform)) {
             RestTask task = new RestTask(context);
             ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -33,11 +34,11 @@ public class RestTask extends AsyncTask<String, Void, Boolean> {
         }
     }
 
-    public RestTask(Context context) {
-        this.context = context;
+    private RestTask(Context context) {
+        this.contextWeakReference = new WeakReference<>(context) ;
     }
 
-    String paramFireBaseToken;
+    private String paramFireBaseToken;
 
     @Override
     protected Boolean doInBackground(String... strings) {
@@ -116,9 +117,10 @@ public class RestTask extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
         if (isSuccess){
-            FireBotsPreferenceManager.getInstance(context).setSubscribedToken(paramFireBaseToken);
-            FireBotsPreferenceManager.getInstance(context).setSubscribeRequestForToken("");
+            FireBotsPreferenceManager.getInstance(contextWeakReference.get()).setSubscribedToken(paramFireBaseToken);
+            FireBotsPreferenceManager.getInstance(contextWeakReference.get()).setSubscribeRequestForToken("");
             Log.d(TAG,"subscribe: 3" );
+
 
         }
 
