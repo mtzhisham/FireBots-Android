@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
+import dev.moataz.firebots.BuildConfig;
 import dev.moataz.firebots.R;
 import dev.moataz.firebots.util.FireBotsPreferenceManager;
 
@@ -17,8 +18,8 @@ public class SubscribeToFireBots {
                     !fireBaseToken.equals(FireBotsPreferenceManager.getInstance(context).getSubscribedToken())
             ){
 
-                RestTask.runTask(context,context.getString(R.string.postUrl), context.getString(R.string.headerPushbotsAppID)
-                        , fireBaseToken, context.getString(R.string.paramPlatform));
+                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
+                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
 
                 Log.d(TAG,"subscribe: " + fireBaseToken );
 
@@ -32,7 +33,9 @@ public class SubscribeToFireBots {
 
     private static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        if (cm != null) {
+            return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        }return false;
     }
 
 }

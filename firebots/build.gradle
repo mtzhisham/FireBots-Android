@@ -20,6 +20,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField 'String', 'PushBotsAPIKey',  PushBotsAPIKey
+            it.buildConfigField 'String', 'PushBotsPlatformCode',  PushBotsPlatformCode
+        }
+
     }
 
 }

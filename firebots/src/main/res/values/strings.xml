@@ -2,7 +2,6 @@
     <string name="app_name">FireBots</string>
 
     <string name="postUrl">http://api.pushbots.com/2/subscriptions</string>
-    <string name="headerPushbotsAppID">5d258e58b7941208c73fcfb7</string>
     <string name="paramPlatform">1</string>
 
     <string name="default_notification_channel_id">1</string>
