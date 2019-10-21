@@ -104,11 +104,15 @@ public class FireBots {
     }
 
     public void setMessagingInterface(FireBotsMessagingInterface fireBotsMessagingInterface) {
-        FireBots.this.fireBotsMessagingInterface = fireBotsMessagingInterface;
+        if (fireBots != null)
+        fireBots.fireBotsMessagingInterface = fireBotsMessagingInterface;
+        else Log.e(TAG, "FireBots is not initialized did you forget to call init()");
     }
 
     public void setNotificationClickListener(FireBotsNotificationClickListenerInterface fireBotsNotificationListener) {
-        FireBots.this.fireBotsNotificationListener = (FireBotsNotificationClickListenerInterface) fireBotsNotificationListener;
+        if (fireBots != null)
+        fireBots.fireBotsNotificationListener = fireBotsNotificationListener;
+        else Log.e(TAG, "FireBots is not initialized did you forget to call init()");
 
     }
 
