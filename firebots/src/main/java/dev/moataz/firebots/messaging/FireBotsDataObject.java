@@ -20,13 +20,13 @@ public class FireBotsDataObject implements Parcelable {
     };
     private HashMap<String, String> data;
 
-    public FireBotsDataObject() {
-        data = new HashMap();
+    FireBotsDataObject() {
+        data = new HashMap<>();
     }
 
 
-    protected FireBotsDataObject(Parcel in) {
-        data = new HashMap();
+    private FireBotsDataObject(Parcel in) {
+        data = new HashMap<>();
         readFromParcel(in);
     }
 
@@ -44,7 +44,7 @@ public class FireBotsDataObject implements Parcelable {
         }
     }
 
-    public void readFromParcel(Parcel in) {
+    private void readFromParcel(Parcel in) {
         int count = in.readInt();
         for (int i = 0; i < count; i++) {
             data.put(in.readString(), in.readString());
@@ -63,7 +63,7 @@ public class FireBotsDataObject implements Parcelable {
         data.put(key, value);
     }
 
-    public void putAll(Map<String, String> map) {
+    void putAll(Map<String, String> map) {
         for (String s : map.keySet()) {
             data.put(s, map.get(s));
         }
