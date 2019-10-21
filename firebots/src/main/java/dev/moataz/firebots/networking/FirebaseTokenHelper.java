@@ -13,7 +13,7 @@ import static dev.moataz.firebots.FireBots.TAG;
 
 public class FirebaseTokenHelper {
 
-    TokenAvilableListiner tokenAvilableListiner;
+    private TokenAvilableListiner tokenAvilableListiner;
 
     public FirebaseTokenHelper(TokenAvilableListiner tokenAvilableListiner) {
         this.tokenAvilableListiner = tokenAvilableListiner;

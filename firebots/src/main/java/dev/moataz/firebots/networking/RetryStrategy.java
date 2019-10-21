@@ -1,19 +1,19 @@
 package dev.moataz.firebots.networking;
 
-public class RetryStrategy {
-    public static final int DEFAULT_RETRIES = 3;
-    public static final long DEFAULT_WAIT_TIME_IN_MILLI = 10001;
+class RetryStrategy {
+    private static final int DEFAULT_RETRIES = 3;
+    private static final long DEFAULT_WAIT_TIME_IN_MILLI = 10001;
 
     private int numberOfRetries;
     private int numberOfTriesLeft;
     private long timeToWait;
 
-    public RetryStrategy() {
+    RetryStrategy() {
         this(DEFAULT_RETRIES, DEFAULT_WAIT_TIME_IN_MILLI);
     }
 
-    public RetryStrategy(int numberOfRetries,
-                         long timeToWait) {
+    private RetryStrategy(int numberOfRetries,
+                          long timeToWait) {
         this.numberOfRetries = numberOfRetries;
         numberOfTriesLeft = numberOfRetries;
         this.timeToWait = timeToWait;
@@ -22,11 +22,11 @@ public class RetryStrategy {
     /**
      * @return true if there are tries left
      */
-    public boolean shouldRetry() {
+    boolean shouldRetry() {
         return numberOfTriesLeft > 0;
     }
 
-    public void errorOccured()  {
+    void errorOccured()  {
         try {
             numberOfTriesLeft--;
             if (!shouldRetry()) {
@@ -41,7 +41,7 @@ public class RetryStrategy {
         }
     }
 
-    public long getTimeToWait() {
+    private long getTimeToWait() {
         return timeToWait;
     }
 
