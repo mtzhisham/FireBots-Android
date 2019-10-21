@@ -29,41 +29,47 @@ public class FireBotsNotificationManager {
         NotificationCompat.Builder builder;
         if (notificationManager == null) {
             notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = notificationManager.getNotificationChannel(id);
-            if (mChannel == null) {
-                mChannel = new NotificationChannel(id, title, importance);
-                mChannel.enableVibration(true);
-                mChannel.setVibrationPattern(new long[]{0, 400, 200, 400});
-                notificationManager.createNotificationChannel(mChannel);
-            }
-            builder = new NotificationCompat.Builder(context, id);
-
-            builder.setContentTitle(aMessage)
-                    .setSmallIcon(android.R.drawable.ic_popup_reminder)
-                    .setContentText(context.getString(R.string.app_name))
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setTicker(aMessage)
-                    .setVibrate(new long[]{0, 400, 200, 400});
         } else {
-            builder = new NotificationCompat.Builder(context, id);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                int importance = NotificationManager.IMPORTANCE_HIGH;
 
-            builder.setContentTitle(aMessage)
-                    .setSmallIcon(android.R.drawable.ic_popup_reminder)
-                    .setContentText(context.getString(R.string.app_name))
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setTicker(aMessage)
-                    .setVibrate(new long[]{0, 400, 200, 400})
-                    .setPriority(Notification.PRIORITY_HIGH);
+                NotificationChannel mChannel = notificationManager.getNotificationChannel(id);
+                if (mChannel == null) {
+                    mChannel = new NotificationChannel(id, title, importance);
+                    mChannel.enableVibration(true);
+                    mChannel.setVibrationPattern(new long[]{0, 400, 200, 400});
+                    notificationManager.createNotificationChannel(mChannel);
+                }
+                builder = new NotificationCompat.Builder(context, id);
+
+                builder.setContentTitle(aMessage)
+                        .setSmallIcon(android.R.drawable.ic_popup_reminder)
+                        .setContentText(context.getString(R.string.app_name))
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .setTicker(aMessage)
+                        .setVibrate(new long[]{0, 400, 200, 400});
+            } else {
+                builder = new NotificationCompat.Builder(context, id);
+
+                builder.setContentTitle(aMessage)
+                        .setSmallIcon(android.R.drawable.ic_popup_reminder)
+                        .setContentText(context.getString(R.string.app_name))
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .setTicker(aMessage)
+                        .setVibrate(new long[]{0, 400, 200, 400})
+                ;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    builder.setPriority(Notification.PRIORITY_HIGH);
+                }
+            }
+            Notification notification = builder.build();
+            notificationManager.notify(NOTIFY_ID, notification);
         }
-        Notification notification = builder.build();
-        notificationManager.notify(NOTIFY_ID, notification);
+
     }
 
 }
