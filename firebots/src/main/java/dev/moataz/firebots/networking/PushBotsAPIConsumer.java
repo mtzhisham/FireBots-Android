@@ -18,8 +18,8 @@ public class PushBotsAPIConsumer {
                     !fireBaseToken.equals(FireBotsPreferenceManager.getInstance(context).getSubscribedToken())
             ){
 
-//                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
-//                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
+                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
+                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
 
                 Log.d(TAG,"subscribe: " + fireBaseToken );
 
