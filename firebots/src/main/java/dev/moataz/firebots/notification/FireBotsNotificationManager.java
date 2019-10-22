@@ -16,7 +16,7 @@ import dev.moataz.firebots.R;
 public class FireBotsNotificationManager {
     private static NotificationManager notificationManager;
 
-    public static void createNotification(String aMessage, Context context, String dest) {
+     public static void createNotification(String aMessage, Context context, String dest) {
         AtomicInteger atomicInteger = new AtomicInteger();
 
         final int NOTIFY_ID = atomicInteger.incrementAndGet();
@@ -24,12 +24,11 @@ public class FireBotsNotificationManager {
         String title = context.getString(R.string.default_notification_channel_title);
         PendingIntent pendingIntent;
 
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         pendingIntent = FireBotsNotificationClickListenerService.getPendingIntent(context, aMessage, dest, NOTIFY_ID);
 
         NotificationCompat.Builder builder;
-        if (notificationManager == null) {
-            notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        } else {
+        if (notificationManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 int importance = NotificationManager.IMPORTANCE_HIGH;
 

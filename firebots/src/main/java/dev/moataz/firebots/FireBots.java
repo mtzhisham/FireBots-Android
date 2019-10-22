@@ -11,10 +11,12 @@ import dev.moataz.firebots.messaging.FireBotsDataObject;
 import dev.moataz.firebots.messaging.FireBotsMessageBroadCastReceiver;
 import dev.moataz.firebots.messaging.FireBotsMessagingInterface;
 import dev.moataz.firebots.networking.FirebaseTokenHelper;
-import dev.moataz.firebots.networking.SubscribeToFireBots;
+import dev.moataz.firebots.networking.PushBotsAPIConsumer;
 import dev.moataz.firebots.notification.FireBotsNotificationClickListenerInterface;
 import dev.moataz.firebots.notification.FireBotsNotificationClickReceiver;
 import dev.moataz.firebots.util.FireBotsPreferenceManager;
+
+import static dev.moataz.firebots.notification.FireBotsNotificationManager.createNotification;
 
 public class FireBots {
     public final static String TAG = "FireBots";
@@ -36,17 +38,20 @@ public class FireBots {
             public void onTokenAvilable(String token) {
                 if (!FireBotsPreferenceManager.getInstance(context).getSubscribedToken().equals(token)){
                     FireBotsPreferenceManager.getInstance(context).setSubscribeRequestForToken(token);
-                    SubscribeToFireBots.subscribe(context,token);
+                    PushBotsAPIConsumer.subscribe(context,token);
                 }
             }
         });
 
+        //mimics the default Firebase behaviour, if app is in background/killed a notification will be displayed
+        //if tha app in foreground/there is an active instance running the user is responsible for showing it
         fireBotsMessageBroadCastReceiver = new FireBotsMessageBroadCastReceiver(new FireBotsMessagingInterface() {
             @Override
             public void onMessageReceived(FireBotsDataObject message) {
                 if (fireBots.fireBotsMessagingInterface != null)
                     fireBots.fireBotsMessagingInterface.onMessageReceived(message);
                 else {
+                    createNotification(message.get("body"), contextWeakReference.get(), message.get("click_action"));
                     for (String name : message.getAll().keySet()) {
                         Log.d(TAG, name + " : " + message.getAll().get(name));
                     }
@@ -65,7 +70,7 @@ public class FireBots {
             }
         });
 
-        registerMyReceiver();
+        registeReceivers();
     }
 
     public static synchronized void init(Context context) {
@@ -86,7 +91,7 @@ public class FireBots {
         }
     }
 
-    private void registerMyReceiver() {
+    private void registeReceivers() {
 
         try {
             IntentFilter intentFilter = new IntentFilter();

@@ -10,7 +10,7 @@ import dev.moataz.firebots.util.FireBotsPreferenceManager;
 
 import static dev.moataz.firebots.FireBots.TAG;
 
-public class SubscribeToFireBots {
+public class PushBotsAPIConsumer {
     public static synchronized void subscribe(Context context, String fireBaseToken){
         if (isNetworkConnected(context)) {
 
@@ -18,8 +18,8 @@ public class SubscribeToFireBots {
                     !fireBaseToken.equals(FireBotsPreferenceManager.getInstance(context).getSubscribedToken())
             ){
 
-                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
-                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
+//                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
+//                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
 
                 Log.d(TAG,"subscribe: " + fireBaseToken );
 

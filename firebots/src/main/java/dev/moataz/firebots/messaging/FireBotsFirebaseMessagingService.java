@@ -9,12 +9,11 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-import dev.moataz.firebots.networking.SubscribeToFireBots;
+import dev.moataz.firebots.networking.PushBotsAPIConsumer;
 import dev.moataz.firebots.util.FireBotsPreferenceManager;
 
 import static dev.moataz.firebots.FireBots.BROADCAST_MESSAGE_RECIVED_ACTION;
 import static dev.moataz.firebots.messaging.FireBotsMessageBroadCastReceiver.EXTRA_FIREPUSH_DATA_OPJECT;
-import static dev.moataz.firebots.notification.FireBotsNotificationManager.createNotification;
 
 public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -28,7 +27,6 @@ public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
             map.putAll(data);
             sendMyBroadCast(map);
 
-            createNotification(data.get("body"), getApplicationContext(), data.get("click_action"));
         }
 
     }
@@ -52,7 +50,7 @@ public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
         if(!FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribedToken().equals(s)
                 && !FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribeRequestForToken().equals(s)){
             FireBotsPreferenceManager.getInstance(getApplicationContext()).setSubscribeRequestForToken(s);
-            SubscribeToFireBots.subscribe(getApplicationContext(),s);
+            PushBotsAPIConsumer.subscribe(getApplicationContext(),s);
         }
 
     }
