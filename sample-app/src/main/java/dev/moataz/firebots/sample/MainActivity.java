@@ -11,6 +11,7 @@ import dev.moataz.firebots.FireBots;
 import dev.moataz.firebots.messaging.FireBotsDataObject;
 import dev.moataz.firebots.messaging.FireBotsMessagingInterface;
 import dev.moataz.firebots.notification.FireBotsNotificationClickListenerInterface;
+import dev.moataz.firebots.notification.FireBotsNotificationManager;
 
 public class MainActivity extends AppCompatActivity implements FireBotsMessagingInterface, FireBotsNotificationClickListenerInterface {
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
 
         FireBots.getInstance().setMessagingInterface(this);
         FireBots.getInstance().setNotificationClickListener(this);
+
     }
 
     @Override
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
         for (String name : data.keySet()){
             Log.d(TAG, name + " : " + data.get(name));
         }
-
+        FireBotsNotificationManager.createNotification(message.get("body"), MainActivity.this, message.get("click_action"));
     }
 
 
