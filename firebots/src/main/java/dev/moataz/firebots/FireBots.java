@@ -8,10 +8,12 @@ import android.util.Log;
 import java.lang.ref.WeakReference;
 
 import dev.moataz.firebots.messaging.FireBotsDataObject;
+import dev.moataz.firebots.messaging.FireBotsFirebaseMessagingService;
 import dev.moataz.firebots.messaging.FireBotsMessageBroadCastReceiver;
 import dev.moataz.firebots.messaging.FireBotsMessagingInterface;
+import dev.moataz.firebots.networking.FirebaseTokenAvailable;
 import dev.moataz.firebots.networking.FirebaseTokenHelper;
-import dev.moataz.firebots.networking.PushBotsAPIConsumer;
+import dev.moataz.firebots.networking.TokenReceivedListiner;
 import dev.moataz.firebots.notification.FireBotsNotificationClickListenerInterface;
 import dev.moataz.firebots.notification.FireBotsNotificationClickReceiver;
 import dev.moataz.firebots.util.FireBotsPreferenceManager;
@@ -28,17 +30,18 @@ public class FireBots {
     private FireBotsMessageBroadCastReceiver fireBotsMessageBroadCastReceiver;
     private FireBotsNotificationClickReceiver fireBotsNotificationClickReciver;
     private WeakReference<Context> contextWeakReference;
+    private boolean canHandleNotifications = false;
 
 
-    private FireBots(final Context context) {
+    private FireBots(final Context context, final FirebaseTokenAvailable firebaseTokenAvailable) {
         this.contextWeakReference = new WeakReference<>(context);
 
-        new FirebaseTokenHelper(new FirebaseTokenHelper.TokenAvilableListiner() {
+        new FirebaseTokenHelper(new TokenReceivedListiner() {
             @Override
-            public void onTokenAvilable(String token) {
+            public void onTokenReceived(String token) {
                 if (!FireBotsPreferenceManager.getInstance(context).getSubscribedToken().equals(token)){
                     FireBotsPreferenceManager.getInstance(context).setSubscribeRequestForToken(token);
-                    PushBotsAPIConsumer.subscribe(context,token);
+                    firebaseTokenAvailable.onFirebaseTokenAvilable(token);
                 }
             }
         });
@@ -48,14 +51,11 @@ public class FireBots {
         fireBotsMessageBroadCastReceiver = new FireBotsMessageBroadCastReceiver(new FireBotsMessagingInterface() {
             @Override
             public void onMessageReceived(FireBotsDataObject message) {
-                if (fireBots.fireBotsMessagingInterface != null)
+                if (fireBots.fireBotsMessagingInterface != null) {
                     fireBots.fireBotsMessagingInterface.onMessageReceived(message);
-                else {
-                    createNotification(message.get("body"), contextWeakReference.get(), message.get("click_action"));
-                    for (String name : message.getAll().keySet()) {
-                        Log.d(TAG, name + " : " + message.getAll().get(name));
-                    }
                 }
+                if (canHandleNotifications)
+                createNotification(message.get("body"), contextWeakReference.get(), message.get("click_action"));
             }
         });
         fireBotsNotificationClickReciver = new FireBotsNotificationClickReceiver(new FireBotsNotificationClickListenerInterface() {
@@ -70,11 +70,18 @@ public class FireBots {
             }
         });
 
+        FireBotsFirebaseMessagingService.setTokenAvailableListener(firebaseTokenAvailable);
         registeReceivers();
     }
 
-    public static synchronized void init(Context context) {
-        if (fireBots == null) fireBots = new FireBots(context);
+
+    public void setCanHandleNotifications(boolean canHandleNotifications) {
+        this.canHandleNotifications = canHandleNotifications;
+    }
+
+    public static synchronized FireBots init(Context context, FirebaseTokenAvailable firebaseTokenAvailable ) {
+        if (fireBots == null) fireBots = new FireBots(context, firebaseTokenAvailable);
+        return fireBots;
     }
 
     public static synchronized FireBots getInstance() {

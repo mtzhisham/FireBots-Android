@@ -37,15 +37,9 @@ BushBots Technical Assignment
 
 
 
-4. open `gradle.properties` and add your key and platform;
-  	```gradle
-  	PushBotsAPIKey = "APP_API_KEY"
-	PushBotsPlatformCode = "APP_Platform"
-
-  	```
 
 
-5.	This Library uses AndroidX  adding this lines in `gradle.properties` is recommended:
+4.	This Library uses AndroidX  adding this lines in `gradle.properties` is recommended:
   	```gradle
       android.useAndroidX=true
 	  android.enableJetifier=true
@@ -61,7 +55,18 @@ public class MyApplication  extends Application {
     public void onCreate() {
         super.onCreate();
         //initialize the library
-        FireBots.init(this);
+        FireBots.init(this, new FirebaseTokenAvailable() {
+            @Override
+            public void onFirebaseTokenAvilable(String token) {
+                Log.d("MyApplication", "onFirebaseTokenAvilable: " + token);
+
+            }
+            @Override
+            public void onFirebaseTokenUpdated(String token) {
+                Log.d("MyApplication", "onFirebaseTokenUpdated: " + token);
+
+            }
+        });
     }
 }
 ```

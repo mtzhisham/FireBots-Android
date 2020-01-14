@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Map;
 
@@ -37,13 +38,17 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
     @Override
     public void onMessageReceived(FireBotsDataObject message) {
         Map<String, String> data = message.getAll();
+        StringBuilder sb = new StringBuilder();
         for (String name : data.keySet()){
             Log.d(TAG, name + " : " + data.get(name));
+            sb.append("\"" + name +"\""+ " : " +"\""+data.get(name)+"\"");
+
         }
-        //send notification library won't handel displaying notification if app in
-        // foreground/not killed
-        FireBotsNotificationManager.createNotification(message.get("body"),
-                MainActivity.this, message.get("click_action"));
+//        FireBotsNotificationManager.createNotification(message.get("body"),
+//                MainActivity.this, message.get("click_action"));
+
+        Toast.makeText(this, sb, Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
     @Override
     public void onNotificationClicked(String clickActionDestination) {
         Log.d(TAG,"ACTION: " +  clickActionDestination);
+        Toast.makeText(this, "[clicked], to: " +  clickActionDestination, Toast.LENGTH_SHORT).show();
     }
 
 }

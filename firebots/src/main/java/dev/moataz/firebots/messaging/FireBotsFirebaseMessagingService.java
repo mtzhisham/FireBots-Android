@@ -9,6 +9,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import dev.moataz.firebots.networking.FirebaseTokenAvailable;
 import dev.moataz.firebots.networking.PushBotsAPIConsumer;
 import dev.moataz.firebots.util.FireBotsPreferenceManager;
 
@@ -16,7 +17,6 @@ import static dev.moataz.firebots.FireBots.BROADCAST_MESSAGE_RECIVED_ACTION;
 import static dev.moataz.firebots.messaging.FireBotsMessageBroadCastReceiver.EXTRA_FIREPUSH_DATA_OPJECT;
 
 public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -45,12 +45,17 @@ public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
+    private static FirebaseTokenAvailable firebaseTokenAvailable;
+    public static void setTokenAvailableListener(FirebaseTokenAvailable firebaseTokenAvailable){
+        firebaseTokenAvailable = firebaseTokenAvailable;
+    }
+
     @Override
     public void onNewToken(@NonNull String s) {
         if(!FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribedToken().equals(s)
                 && !FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribeRequestForToken().equals(s)){
             FireBotsPreferenceManager.getInstance(getApplicationContext()).setSubscribeRequestForToken(s);
-            PushBotsAPIConsumer.subscribe(getApplicationContext(),s);
+            firebaseTokenAvailable.onFirebaseTokenUpdated(s);
         }
 
     }

@@ -13,10 +13,10 @@ import static dev.moataz.firebots.FireBots.TAG;
 
 public class FirebaseTokenHelper {
 
-    private TokenAvilableListiner tokenAvilableListiner;
+    private TokenReceivedListiner tokenReceivedListiner;
 
-    public FirebaseTokenHelper(TokenAvilableListiner tokenAvilableListiner) {
-        this.tokenAvilableListiner = tokenAvilableListiner;
+    public FirebaseTokenHelper(TokenReceivedListiner tokenReceivedListiner) {
+        this.tokenReceivedListiner = tokenReceivedListiner;
         requestToken();
     }
 
@@ -29,15 +29,17 @@ public class FirebaseTokenHelper {
                             Log.w(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-                        tokenAvilableListiner.onTokenAvilable(task.getResult().getToken());
+                        try {
+                            tokenReceivedListiner.onTokenReceived(task.getResult().getToken());
+
+                        } catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
 
                     }
                 });
 
     }
 
-    public interface TokenAvilableListiner{
-        void onTokenAvilable(String token);
-    }
 
 }

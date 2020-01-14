@@ -12,14 +12,17 @@ import static dev.moataz.firebots.FireBots.TAG;
 
 public class PushBotsAPIConsumer {
     public static synchronized void subscribe(Context context, String fireBaseToken){
-        if (isNetworkConnected(context)) {
+//        if (isNetworkConnected(context)) {
 
             if (!FireBotsPreferenceManager.getInstance(context).getSubscribedToken().equals(FireBotsPreferenceManager.getInstance(context).getSubscribeRequestForToken())&&
                     !fireBaseToken.equals(FireBotsPreferenceManager.getInstance(context).getSubscribedToken())
             ){
 
-                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
-                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
+//                RestTask.runTask(context,context.getString(R.string.postUrl), BuildConfig.PushBotsAPIKey
+//                        , fireBaseToken, BuildConfig.PushBotsPlatformCode);
+
+
+
 
                 Log.d(TAG,"subscribe: " + fireBaseToken );
 
@@ -28,7 +31,7 @@ public class PushBotsAPIConsumer {
             }
 
 
-        }
+//        }
     }
 
     private static boolean isNetworkConnected(Context context) {

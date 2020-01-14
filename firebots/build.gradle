@@ -1,12 +1,17 @@
 apply plugin: 'com.android.library'
 
+
+
+
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName project.getProperty("libraryVersion")
@@ -20,41 +25,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        buildTypes.each {
-            it.buildConfigField 'String', 'PushBotsAPIKey',  PushBotsAPIKey
-            it.buildConfigField 'String', 'PushBotsPlatformCode',  PushBotsPlatformCode
-        }
 
     }
 
-}
-apply from: 'https://raw.githubusercontent.com/kostasdrakonakis/maven-upload/master/bintray.gradle'
-apply from: 'https://raw.githubusercontent.com/kostasdrakonakis/maven-upload/master/publications.gradle'
-
-def requestedFMessaging = '17.0.0'
-def useFMessaging = '17.1.0'
-def FIID = '16.2.0'
-
-configurations.all {
-
-
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'com.google.firebase' && details.requested.name == 'firebase-messaging' && details.requested.version == requestedFMessaging) {
-            details.useVersion useFMessaging
-            details.because 'updating to a newer version'
-
-            logger.warn('Config name: ' + displayName + ' Detected firebase-messaging version ' + details.requested.version + ' firebase-messaging updated to ' + useFMessaging)
-        } else if (details.requested.group == 'com.google.firebase' && details.requested.name == 'firebase-iid') {
-
-            if (details.requested.version == FIID || details.requested.version == '[16.2.0]') {
-                logger.warn('Config name: ' + displayName + ' Detected correct firebase-iid version ' + FIID)
-            } else {
-                logger.warn('Config name: ' + displayName + ' Detected un-correct firebase-iid version ' + details.requested.version)
-            }
-
-        }
-
+    lintOptions {
+        abortOnError false
     }
+
 }
 
 dependencies {
@@ -65,6 +42,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
+
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/bintrayv.gradle'

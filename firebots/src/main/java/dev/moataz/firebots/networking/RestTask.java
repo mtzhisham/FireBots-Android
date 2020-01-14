@@ -119,9 +119,6 @@ public class RestTask extends AsyncTask<String, Void, Boolean> {
         if (isSuccess){
             FireBotsPreferenceManager.getInstance(contextWeakReference.get()).setSubscribedToken(paramFireBaseToken);
             FireBotsPreferenceManager.getInstance(contextWeakReference.get()).setSubscribeRequestForToken("");
-            Log.d(TAG,"subscribe: 3" );
-
-
         }
 
     }

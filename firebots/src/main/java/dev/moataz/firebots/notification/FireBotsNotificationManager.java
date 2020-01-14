@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -27,6 +29,7 @@ public class FireBotsNotificationManager {
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         pendingIntent = FireBotsNotificationClickListenerService.getPendingIntent(context, aMessage, dest, NOTIFY_ID);
 
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder;
         if (notificationManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -36,7 +39,9 @@ public class FireBotsNotificationManager {
                 if (mChannel == null) {
                     mChannel = new NotificationChannel(id, title, importance);
                     mChannel.enableVibration(true);
-                    mChannel.setVibrationPattern(new long[]{0, 400, 200, 400});
+                    mChannel.enableLights(true);
+
+                    mChannel.setVibrationPattern(new long[] { 0, 500, 250, 500});
                     notificationManager.createNotificationChannel(mChannel);
                 }
                 builder = new NotificationCompat.Builder(context, id);
@@ -48,7 +53,7 @@ public class FireBotsNotificationManager {
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent)
                         .setTicker(aMessage)
-                        .setVibrate(new long[]{0, 400, 200, 400});
+                        .setSound(alarmSound);
             } else {
                 builder = new NotificationCompat.Builder(context, id);
 
@@ -59,7 +64,8 @@ public class FireBotsNotificationManager {
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent)
                         .setTicker(aMessage)
-                        .setVibrate(new long[]{0, 400, 200, 400})
+                        .setSound(alarmSound)
+                        .setVibrate(new long[] { 0, 500, 250, 500});
                 ;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     builder.setPriority(Notification.PRIORITY_HIGH);
