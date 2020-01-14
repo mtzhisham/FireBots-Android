@@ -21,7 +21,7 @@ BushBots Technical Assignment
   	dependencies {
     ...
 
-    implementation 'dev.moataz:firebots:0.0.5'
+    implementation 'dev.moataz:firebots:0.0.6'
     ...
 
     }
@@ -66,7 +66,7 @@ public class MyApplication  extends Application {
                 Log.d("MyApplication", "onFirebaseTokenUpdated: " + token);
 
             }
-        });
+        }).setCanHandleNotifications(true);
     }
 }
 ```
