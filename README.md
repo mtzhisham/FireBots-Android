@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements FireBotsMessaging
         for (String name : data.keySet()){
             Log.d(TAG, name + " : " + data.get(name));
         }
-        //send notification library won't handel displaying notification if app in
+        //send notification manually through library helper method, library won't handel displaying notification if app in
         // foreground/not killed
         FireBotsNotificationManager.createNotification(message.get("body"),
                 MainActivity.this, message.get("click_action"));
