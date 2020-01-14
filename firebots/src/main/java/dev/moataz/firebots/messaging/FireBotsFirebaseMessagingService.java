@@ -55,6 +55,7 @@ public class FireBotsFirebaseMessagingService extends FirebaseMessagingService {
         if(!FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribedToken().equals(s)
                 && !FireBotsPreferenceManager.getInstance(getApplicationContext()).getSubscribeRequestForToken().equals(s)){
             FireBotsPreferenceManager.getInstance(getApplicationContext()).setSubscribeRequestForToken(s);
+           if (firebaseTokenAvailable !=null)
             firebaseTokenAvailable.onFirebaseTokenUpdated(s);
         }
 

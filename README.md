@@ -21,7 +21,7 @@ BushBots Technical Assignment
   	dependencies {
     ...
 
-    implementation 'dev.moataz:firebots:0.0.6'
+    implementation 'dev.moataz:firebots:0.0.7'
     ...
 
     }

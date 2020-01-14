@@ -41,6 +41,7 @@ public class FireBots {
             public void onTokenReceived(String token) {
                 if (!FireBotsPreferenceManager.getInstance(context).getSubscribedToken().equals(token)){
                     FireBotsPreferenceManager.getInstance(context).setSubscribeRequestForToken(token);
+                    if (firebaseTokenAvailable !=null)
                     firebaseTokenAvailable.onFirebaseTokenAvilable(token);
                 }
             }
