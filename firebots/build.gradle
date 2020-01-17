@@ -1,10 +1,5 @@
 apply plugin: 'com.android.library'
 
-
-
-
-
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -44,6 +39,29 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
+
+
+
+task switchToDebug(type: Copy) {
+    description = 'Switches to DEBUG google-services.json'
+    from ".."
+    include "google-services.json"
+    into "."
+}
+
+task switchToRelease(type: Copy) {
+    description = 'Switches to RELEASE google-services.json'
+    from ".."
+    include "google-services.json"
+    into "."
+}
+
+
+afterEvaluate {
+    processDebugGoogleServices.dependsOn switchToDebug
+    processReleaseGoogleServices.dependsOn switchToRelease
+}
+
 apply plugin: 'com.google.gms.google-services'
 
 apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'

@@ -1,7 +1,7 @@
 # FireBots-Android
 FireBots is a wrapper library for Firebase for Android.
 
-BushBots Technical Assignment
+
 
 ## Installation
 
@@ -21,29 +21,23 @@ BushBots Technical Assignment
   	dependencies {
     ...
 
-    implementation 'dev.moataz:firebots:0.0.7'
+    implementation 'dev.moataz:firebots:0.0.8'
     ...
 
     }
   	```
 
 
-3. recommended to update the following lines in `build.gradle` app module app module:
-  	```gradle
-  	buildToolsVersion = "29.0.2"
-  	compileSdkVersion = 29
-	targetSdkVersion = 29
-  	```
-
-
-
-
-
-4.	This Library uses AndroidX  adding this lines in `gradle.properties` is recommended:
+3.	This Library uses AndroidX  adding this lines in `gradle.properties` is recommended:
   	```gradle
       android.useAndroidX=true
 	  android.enableJetifier=true
   	```
+
+
+4. place your `google-services.json` in your project root directory
+
+
 
 ## Usage
 
